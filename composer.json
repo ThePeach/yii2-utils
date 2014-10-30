@@ -1,0 +1,21 @@
+{
+    "name": "the-peach/yii2-utils",
+    "type": "library",
+    "description": "A small collection of utilities for Yii2",
+    "keywords": ["yii2 helper","yii2 utilities", "yii2 utils", "utils", "utilities","yii2"],
+    "homepage": "https://github.com/ThePeach/yii2-utils",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matteo 'Peach' Pescarin",
+            "email": "nospam@smartart.it"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "the-peach/yii2-s3": "*"
+    },
+    "autoload": {
+        "psr-4": { "ThePeach\\yii2utils\\": "" }
+    }
+}
