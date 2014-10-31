@@ -32,15 +32,20 @@ class ModelFileConnector
         if ($file !== null) {
             $nameExtension = explode('.', $file->name);
             $ext = end($nameExtension);
-            $fileName = $fileName . ".{$ext}";
-            $filePath = self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $fileName);
+            $fileNameExt = $fileName . ".{$ext}";
+            $filePath = self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $fileNameExt);
 
             // TODO check return status
             fileUtils::saveUploadedFile($file, $filePath);
 
+            // get the filename without extension so we can check we are talking about the same file
+            $toFilePathArr = explode('.', $model->$toAttribute);
+            array_pop($toFilePathArr);
+            $toFileName = implode('.', $toFilePathArr);
+
             // remove the old file if filename is different
             if ($model->$toAttribute
-                && $model->$toAttribute !== $filePath
+                && $toFileName !== self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $fileName)
             ) {
                 // TODO check return status
                 fileUtils::delete($model->$toAttribute);
