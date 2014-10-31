@@ -83,7 +83,7 @@ class FileUtils
         if (!Utils::isRemoteUrl($fromFilePath)) {
 
             if (Yii::$app->has('storage')) {
-                // use Yii::$app->storage->copyObject([...]);
+                $res = Yii::$app->storage->copyFile($fromFilePath, $toFilePath);
             }
             elseif (
                 file_exists(
