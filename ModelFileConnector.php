@@ -79,31 +79,6 @@ class ModelFileConnector
     }
 
     /**
-     * Deletes a file given a relative file path.
-     *
-     * @param string $filePath
-     * @return bool
-     */
-    public static function deleteFile($filePath)
-    {
-        $res = false;
-
-        if (!Utils::isRemoteUrl($filePath)) {
-            $filePath = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . $filePath;
-
-            if (is_file($filePath)) {
-                $res = unlink($filePath);
-            }
-        }
-        else {
-            // nothing to be done: the image is an external url
-            $res = true;
-        }
-
-        return $res;
-    }
-
-    /**
      * Physically removes the file if existing, and sets the $attribute to null.
      *
      * @param Model  $model
