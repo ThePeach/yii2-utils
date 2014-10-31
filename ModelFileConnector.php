@@ -79,12 +79,12 @@ class ModelFileConnector
     }
 
     /**
-     * Deletes an image given a relative file path.
+     * Deletes a file given a relative file path.
      *
      * @param string $filePath
      * @return bool
      */
-    public static function deleteImage($filePath)
+    public static function deleteFile($filePath)
     {
         $res = false;
 
@@ -104,13 +104,13 @@ class ModelFileConnector
     }
 
     /**
-     * Physically removes the image if existing, and sets the $attribute to null.
+     * Physically removes the file if existing, and sets the $attribute to null.
      *
      * @param Model  $model
      * @param string $attribute
      * @return bool
      */
-    public static function removeUploadedImage(Model $model, $attribute)
+    public static function removeUploadedFile(Model $model, $attribute)
     {
         $result = false;
 
