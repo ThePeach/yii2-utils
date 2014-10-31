@@ -1,10 +1,10 @@
 <?php
 
-namespace ThePeach\s3;
+namespace ThePeach\yii2utils\s3;
 
 use Yii;
 use yii\web\UploadedFile;
-use \ThePeach\Utils;
+use \ThePeach\yii2utils\Utils;
 
 class FileUtils
 {

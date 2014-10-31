@@ -1,12 +1,12 @@
 <?php
 
-namespace ThePeach;
+namespace ThePeach\yii2utils;
 
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
-use ThePeach\s3\FileUtils;
+use \ThePeach\yii2utils\s3\FileUtils;
 
 class ModelFileConnector
 {
