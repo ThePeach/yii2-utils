@@ -73,7 +73,7 @@ class ModelFileConnector
         $nameExtension = explode('.', $model->$fromAttribute);
         $ext = end($nameExtension);
         $toFileName = $fileName . ".{$ext}";
-        $toFilePath = $subDir . DIRECTORY_SEPARATOR . $toFileName;
+        $toFilePath = self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $toFileName);
 
         $model->$toAttributeUrl = FileUtils::copyFile($model->$fromAttribute, $toFilePath);
     }
