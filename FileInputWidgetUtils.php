@@ -39,7 +39,7 @@ class FileInputWidgetUtils
                 Html::img(
                     Utils::isRemoteUrl($model->$attribute)
                         ? $model->$attribute
-                        : fileUtils::getFileUrl($model->$attribute, true),
+                        : FileUtils::getFileUrl($model->$attribute, true),
                     [
                         'class'=>'file-preview-image',
                         'alt'=>$model->$attribute,

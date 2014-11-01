@@ -36,14 +36,14 @@ class ModelFileConnector
             $filePath = self::getUploadPath($subDir . $fileName);
 
             // TODO check return status
-            fileUtils::saveUploadedFile($file, $filePath);
+            FileUtils::saveUploadedFile($file, $filePath);
 
             // remove the old file if filename is different
             if ($model->$toAttribute
                 && $model->$toAttribute !== $filePath
             ) {
                 // TODO check return status
-                fileUtils::delete($model->$toAttribute);
+                FileUtils::delete($model->$toAttribute);
             }
         }
         elseif ($file === null && $model->$toAttribute) {
@@ -115,7 +115,7 @@ class ModelFileConnector
         $result = false;
 
         if ($model->$attribute) {
-            $result = fileUtils::delete($model->$attribute);
+            $result = FileUtils::delete($model->$attribute);
         }
 
         $model->$attribute = null;
