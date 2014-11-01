@@ -1,10 +1,10 @@
 <?php
 
-namespace ThePeach\s3;
+namespace ThePeach\yii2utils\s3;
 
 use Yii;
 use yii\web\UploadedFile;
-use \ThePeach\Utils;
+use \ThePeach\yii2utils\Utils;
 
 class FileUtils
 {
@@ -83,7 +83,7 @@ class FileUtils
         if (!Utils::isRemoteUrl($fromFilePath)) {
 
             if (Yii::$app->has('storage')) {
-                // use Yii::$app->storage->copyObject([...]);
+                $res = Yii::$app->storage->copyFile($fromFilePath, $toFilePath);
             }
             elseif (
                 file_exists(

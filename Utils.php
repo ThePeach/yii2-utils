@@ -1,6 +1,6 @@
 <?php
 
-namespace ThePeach;
+namespace ThePeach\yii2utils;
 
 use yii\base\Component;
 

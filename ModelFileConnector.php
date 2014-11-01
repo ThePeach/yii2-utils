@@ -1,12 +1,12 @@
 <?php
 
-namespace ThePeach;
+namespace ThePeach\yii2utils;
 
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
-use ThePeach\s3\FileUtils;
+use \ThePeach\yii2utils\s3\FileUtils;
 
 class ModelFileConnector
 {
@@ -21,7 +21,7 @@ class ModelFileConnector
      * @param string $toAttribute   the attribute where to save the relative file path
      * @param string $fileName      the name of the file without extension (will handled automatically).
      * @param string $subDir        additional subdirectory where to move the file to (must exist!),
-     *                              trailing slash expected.
+     *                              no trailing slash expected.
      */
     public static function uploadAndSetFile(
         Model $model, $fromAttribute, $toAttribute, $fileName, $subDir = null
@@ -32,15 +32,20 @@ class ModelFileConnector
         if ($file !== null) {
             $nameExtension = explode('.', $file->name);
             $ext = end($nameExtension);
-            $fileName = $fileName . ".{$ext}";
-            $filePath = self::getUploadPath($subDir . $fileName);
+            $fileNameExt = $fileName . ".{$ext}";
+            $filePath = self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $fileNameExt);
 
             // TODO check return status
             FileUtils::saveUploadedFile($file, $filePath);
 
+            // get the filename without extension so we can check we are talking about the same file
+            $toFilePathArr = explode('.', $model->$toAttribute);
+            array_pop($toFilePathArr);
+            $toFileName = implode('.', $toFilePathArr);
+
             // remove the old file if filename is different
             if ($model->$toAttribute
-                && $model->$toAttribute !== $filePath
+                && $toFileName !== self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $fileName)
             ) {
                 // TODO check return status
                 FileUtils::delete($model->$toAttribute);
@@ -62,7 +67,7 @@ class ModelFileConnector
      * @param string $toAttributeUrl the attribute that will contain the URL of the copied file
      * @param string $fileName       the name of the new file without extension
      * @param null   $subDir         optional sub directory where to store the copied file
-     *                               relative to webroot
+     *                               relative to webroot. No trailing slash
      *
      * @internal param string $type the attribute name that will be used to compose the new image file name
      */
@@ -73,44 +78,19 @@ class ModelFileConnector
         $nameExtension = explode('.', $model->$fromAttribute);
         $ext = end($nameExtension);
         $toFileName = $fileName . ".{$ext}";
-        $toFilePath = $subDir . $toFileName;
+        $toFilePath = self::getUploadPath($subDir . DIRECTORY_SEPARATOR . $toFileName);
 
         $model->$toAttributeUrl = FileUtils::copyFile($model->$fromAttribute, $toFilePath);
     }
 
     /**
-     * Deletes an image given a relative file path.
-     *
-     * @param string $filePath
-     * @return bool
-     */
-    public static function deleteImage($filePath)
-    {
-        $res = false;
-
-        if (!Utils::isRemoteUrl($filePath)) {
-            $filePath = Yii::getAlias('@webroot') . $filePath;
-
-            if (is_file($filePath)) {
-                $res = unlink($filePath);
-            }
-        }
-        else {
-            // nothing to be done: the image is an external url
-            $res = true;
-        }
-
-        return $res;
-    }
-
-    /**
-     * Physically removes the image if existing, and sets the $attribute to null.
+     * Physically removes the file if existing, and sets the $attribute to null.
      *
      * @param Model  $model
      * @param string $attribute
      * @return bool
      */
-    public static function removeUploadedImage(Model $model, $attribute)
+    public static function removeUploadedFile(Model $model, $attribute)
     {
         $result = false;
 
